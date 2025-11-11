@@ -64,4 +64,4 @@ TypeScript
 
 ## Resumen
 
-Básicamente armamos una app completa para manejar estudiantes. El backend es una API REST con Spring Boot que guarda todo en una base de datos H2.
+Básicamente armamos una app completa para manejar estudiantes.

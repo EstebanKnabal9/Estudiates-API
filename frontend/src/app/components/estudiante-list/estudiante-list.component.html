@@ -1,0 +1,169 @@
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">
+        <i class="fas fa-users me-2"></i>
+        Lista de Estudiantes
+      </h2>
+      <button 
+        class="btn btn-primary" 
+        (click)="mostrarFormularioAgregar()"
+        *ngIf="!mostrarFormulario">
+        <i class="fas fa-plus me-2"></i>
+        Agregar Estudiante
+      </button>
+    </div>
+
+    <!-- Mensaje de alerta -->
+    <div 
+      *ngIf="mensaje" 
+      class="alert alert-{{tipoMensaje}} alert-dismissible fade show" 
+      role="alert">
+      {{mensaje}}
+      <button 
+        type="button" 
+        class="btn-close" 
+        (click)="mensaje = ''"
+        aria-label="Close">
+      </button>
+    </div>
+
+    <!-- Formulario -->
+    <div *ngIf="mostrarFormulario" class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas {{modoEdicion ? 'fa-user-edit' : 'fa-user-plus'}} me-2"></i>
+          {{modoEdicion ? 'Editar Estudiante' : 'Agregar Estudiante'}}
+        </h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="guardarEstudiante()" #estudianteForm="ngForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="nombre" class="form-label">Nombre *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="nombre"
+                [(ngModel)]="nuevoEstudiante.nombre" 
+                name="nombre"
+                required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="apellido" class="form-label">Apellido *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="apellido"
+                [(ngModel)]="nuevoEstudiante.apellido" 
+                name="apellido"
+                required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email *</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="email"
+                [(ngModel)]="nuevoEstudiante.email" 
+                name="email"
+                required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="edad" class="form-label">Edad</label>
+              <input 
+                type="number" 
+                class="form-control" 
+                id="edad"
+                [(ngModel)]="nuevoEstudiante.edad" 
+                name="edad"
+                min="16" 
+                max="100">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="carrera" class="form-label">Carrera</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="carrera"
+              [(ngModel)]="nuevoEstudiante.carrera" 
+              name="carrera">
+          </div>
+          <div class="d-flex gap-2">
+            <button 
+              type="submit" 
+              class="btn btn-success"
+              [disabled]="!esFormularioValido()">
+              <i class="fas fa-save me-2"></i>
+              {{modoEdicion ? 'Actualizar' : 'Guardar'}}
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary"
+              (click)="cancelarFormulario()">
+              <i class="fas fa-times me-2"></i>
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tabla de estudiantes -->
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Edad</th>
+                <th>Carrera</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let estudiante of estudiantes">
+                <td>{{estudiante.id}}</td>
+                <td>{{estudiante.nombre}}</td>
+                <td>{{estudiante.apellido}}</td>
+                <td>{{estudiante.email}}</td>
+                <td>{{estudiante.edad || 'N/A'}}</td>
+                <td>{{estudiante.carrera || 'N/A'}}</td>
+                <td>
+                  <div class="btn-group" role="group">
+                    <button 
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="mostrarFormularioEditar(estudiante)"
+                      title="Editar">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button 
+                      class="btn btn-sm btn-outline-danger"
+                      (click)="eliminarEstudiante(estudiante.id!)"
+                      title="Eliminar">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="estudiantes.length === 0">
+                <td colspan="7" class="text-center text-muted">
+                  <i class="fas fa-inbox fa-2x mb-2"></i>
+                  <br>
+                  No hay estudiantes registrados
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
